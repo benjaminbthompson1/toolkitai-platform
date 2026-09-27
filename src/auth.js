@@ -11,7 +11,10 @@ const { pool, SCHEMA_NAME } = require('./db');
 // its own src/session.js. For one login to work across every app, these
 // values must be IDENTICAL across every service's deployment:
 //   - SESSION_SECRET (env var — same value everywhere)
-//   - the cookie `name` ('toolkitai.sid')
+//   - the cookie `name` ('tkai_session' — deliberately different from
+//     Sealwright's existing 'toolkitai.sid' cookie, since Sealwright still
+//     runs as its own service on the same domain for now and two different
+//     services must never claim the same cookie name on the same host)
 //   - the session table's schema + table name (every service points
 //     connect-pg-simple at THIS schema, via PLATFORM_SCHEMA, not its own)
 //   - cookie `path` (left at the default '/', so it's sent to every app's
