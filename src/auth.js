@@ -23,7 +23,7 @@ const { pool, SCHEMA_NAME } = require('./db');
 function sessionMiddleware() {
   return session({
     store: new pgSession({ pool, schemaName: SCHEMA_NAME, tableName: 'session', createTableIfMissing: true }),
-    name: 'toolkitai.sid',
+    name: 'tkai_session',
     secret: process.env.SESSION_SECRET || 'dev-only-insecure-secret',
     resave: false,
     saveUninitialized: false,
