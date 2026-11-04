@@ -9,6 +9,9 @@ const {
   welcomeEmail, resetPasswordLinkEmail, passwordChangedEmail, accountUpdatedEmail
 } = require('../emailTemplates');
 
+const C = require('../company');
+const legal = require('../legal');
+
 const router = express.Router();
 
 // ============================================================
@@ -79,16 +82,25 @@ function passwordField(id, name, opts) {
   </div>`;
 }
 
-function shell(title, bodyInner) {
+function footer() {
+  const y = new Date().getFullYear();
+  return `<footer class="site-footer">
+    <div class="footer-links"><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><a href="mailto:${C.email}">${C.email}</a></div>
+    <div class="footer-legal">&copy; ${y} ${C.legalName}. All rights reserved. ${C.brand} is a product of ${C.legalName}, a ${C.state} limited liability company.</div>
+  </footer>`;
+}
+
+function shell(title, bodyInner, description) {
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title} — Toolkit AI</title>
+  <meta name="description" content="${escapeHtml(description || 'Toolkit AI LLC builds practical web apps and games: Sealwright, Scanline and Shell Yeah!.')}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/portal-assets/style.css">
   </head><body>
   <div class="bg-glow"></div><div class="bg-grid"></div>
-  <div id="app">${bodyInner}</div>
+  <div id="app">${bodyInner}${footer()}</div>
   <script>
     document.addEventListener('click', function (e) {
       var btn = e.target.closest('.pw-toggle');
@@ -120,7 +132,54 @@ function escapeHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
-// ---------- landing page ----------
+// ---------- landing page (public: everything here is readable without signing in) ----------
+const SHELLYEAH_URL = 'https://shellyeah.tkitai.com';
+
+function publicSections(user) {
+  const appCards = [
+    { name: 'Sealwright', url: '/sealwright/', icon: APPS[0] && APPS[0].icon,
+      text: 'Send a PDF or Word document to one or more people for electronic signature. Signers get a secure link (no account needed), sign in order if you choose, and everyone receives a sealed copy with a timestamped audit trail.' },
+    { name: 'Scanline', url: '/scanline/', icon: APPS[1] && APPS[1].icon,
+      text: 'Turn your phone or webcam into a document scanner. Capture pages, crop and clean them up, extract the text, and save them as a PDF.' }
+  ].map(a => `<div class="info-card">
+      <div class="info-card-head">${a.icon || ''}<h3>${escapeHtml(a.name)}</h3></div>
+      <p>${escapeHtml(a.text)}</p>
+      <a class="link" href="${a.url}">${user ? 'Open ' + escapeHtml(a.name) : 'Sign in to use ' + escapeHtml(a.name)} &rarr;</a>
+    </div>`).join('');
+
+  return `
+    <section class="pub-section" id="about">
+      <div class="section-label">About</div>
+      <p class="pub-lead"><strong>${C.legalName}</strong> is a ${C.state} company that designs and builds software: practical web apps that take the friction out of everyday paperwork, and casual games. ${C.brand} is our product brand, and one ${C.brand} account works across our apps.</p>
+    </section>
+
+    <section class="pub-section" id="apps">
+      <div class="section-label">Apps</div>
+      <div class="info-grid">${appCards}</div>
+    </section>
+
+    <section class="pub-section" id="games">
+      <div class="section-label">Games</div>
+      <div class="game-card">
+        <img class="game-logo" src="/portal-assets/img/shellyeah-logo.png" alt="Shell Yeah! logo: Beachcombing around the world" width="450" height="175">
+        <div class="game-body">
+          <h3>Shell Yeah!</h3>
+          <p>Shell Yeah! is a beachcombing game that lets you explore real shelling beaches around the world, from Sanibel to Shark Bay, and collect the actual shells, shark teeth and treasures found on each one. Sift through shell beds, beat the clock in speed runs, learn about every species you find, and climb the global leaderboard on your way to shelling prizes.</p>
+          <div class="game-shots">
+            <img src="/portal-assets/img/shellyeah-1.jpg" alt="Shell Yeah! screenshot: a beach with seashells on the sand and in the shallow water" loading="lazy">
+            <img src="/portal-assets/img/shellyeah-2.jpg" alt="Shell Yeah! screenshot: a crowded patch of sand with a 0 of 15 shells found counter" loading="lazy">
+          </div>
+          <a class="btn btn-primary" href="${SHELLYEAH_URL}" target="_blank" rel="noopener">Play Shell Yeah!</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="pub-section" id="contact">
+      <div class="section-label">Contact</div>
+      <p class="pub-lead">Questions, support or feedback: <a class="link" href="mailto:${C.email}">${C.email}</a><br><span class="muted-line">${C.legalName} &middot; ${C.state}, USA</span></p>
+    </section>`;
+}
+
 router.get('/', (req, res) => {
   const user = req.session && req.session.userId ? { email: req.session.userEmail, isAdmin: !!req.session.isAdmin } : null;
   let body = topbar(user);
@@ -139,15 +198,26 @@ router.get('/', (req, res) => {
   } else {
     body += `
     <div class="hero">
-      <h1>A <span class="accent-text">toolkit</span> of small,<br>focused apps.</h1>
-      <p>One account, a growing set of tools — ${APPS.map(a => escapeHtml(a.name)).join(', ')}, and more on the way.</p>
+      <h1>Small, focused <span class="accent-text">apps and games</span>,<br>built with care.</h1>
+      <p>${C.legalName} builds practical web apps and games: ${APPS.map(a => escapeHtml(a.name)).join(', ')} and Shell Yeah!.</p>
       <div class="hero-actions">
-        <a href="/signup" class="btn btn-primary">Create an account</a>
-        <a href="/login" class="btn btn-ghost">Sign in</a>
+        <a href="#apps" class="btn btn-primary">Explore our apps</a>
+        <a href="#games" class="btn btn-ghost">Play Shell Yeah!</a>
       </div>
     </div>`;
   }
-  res.send(shell('Toolkit AI', body));
+  body += publicSections(user);
+  res.send(shell('Apps and games', body, `${C.legalName} builds practical web apps and games, including Sealwright (e-signatures), Scanline (document scanning) and the beachcombing game Shell Yeah!.`));
+});
+
+// ---------- public legal pages ----------
+router.get('/privacy', (req, res) => {
+  const user = req.session && req.session.userId ? { email: req.session.userEmail, isAdmin: !!req.session.isAdmin } : null;
+  res.send(shell('Privacy Policy', `${topbar(user)}<article class="legal">${legal.privacyHtml()}</article>`, `Privacy Policy for ${C.legalName}.`));
+});
+router.get('/terms', (req, res) => {
+  const user = req.session && req.session.userId ? { email: req.session.userEmail, isAdmin: !!req.session.isAdmin } : null;
+  res.send(shell('Terms of Service', `${topbar(user)}<article class="legal">${legal.termsHtml()}</article>`, `Terms of Service for ${C.legalName}.`));
 });
 
 // ---------- signup ----------
