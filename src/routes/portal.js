@@ -135,6 +135,25 @@ function escapeHtml(s) {
 // ---------- landing page (public: everything here is readable without signing in) ----------
 const SHELLYEAH_URL = 'https://shellyeah.tkitai.com';
 
+// Games shown as tiles on the signed-in home page (same grid as the apps).
+const GAMES = [
+  {
+    id: 'shellyeah', name: 'Shell Yeah!', url: SHELLYEAH_URL, external: true,
+    description: 'Beachcombing around the world',
+    icon: `<svg class="app-tile-icon" width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="shellBgPortal" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#127F8C"/><stop offset="100%" stop-color="#0A4452"/>
+      </linearGradient></defs>
+      <rect x="4" y="4" width="92" height="92" rx="22" fill="url(#shellBgPortal)"/>
+      <path d="M50 20 C74 20 86 40 86 62 C86 70 80 76 72 76 L28 76 C20 76 14 70 14 62 C14 40 26 20 50 20 Z" fill="#FFF3DC"/>
+      <g stroke="#DB5373" stroke-width="3" stroke-linecap="round" fill="none">
+        <path d="M50 74 L50 28"/><path d="M42 74 L32 34"/><path d="M58 74 L68 34"/><path d="M34 74 L21 46"/><path d="M66 74 L79 46"/>
+      </g>
+      <rect x="38" y="74" width="24" height="9" rx="4.5" fill="#DB5373"/>
+    </svg>`
+  }
+];
+
 function publicSections(user) {
   const shots = (a) => a.shots.map(sh => `<a href="/portal-assets/img/${sh.img}" target="_blank" rel="noopener" aria-label="${escapeHtml(sh.alt)} (opens full size)"><img src="/portal-assets/img/${sh.thumb}" alt="${escapeHtml(sh.alt)}" loading="lazy"></a>`).join('');
   const appCards = [
@@ -196,16 +215,20 @@ router.get('/', (req, res) => {
   const user = req.session && req.session.userId ? { email: req.session.userEmail, isAdmin: !!req.session.isAdmin } : null;
   let body = topbar(user);
   if (user) {
-    const tiles = APPS.map(a => `<a href="${a.url}" class="app-tile">${a.icon}<h3>${escapeHtml(a.name)}</h3><p>${escapeHtml(a.description)}</p></a>`).join('');
+    const tile = (a) => `<a href="${a.url}" class="app-tile"${a.external ? ' target="_blank" rel="noopener"' : ''}>${a.icon}<h3>${escapeHtml(a.name)}</h3><p>${escapeHtml(a.description)}</p></a>`;
     body += `
     <div class="section-label">Your apps</div>
     <div class="app-grid">
-      ${tiles}
+      ${APPS.map(tile).join('')}
       <div class="app-tile app-tile-soon">
         <span class="soon-badge">Coming soon</span>
         <h3>More tools</h3>
         <p>Additional apps will appear here as they launch.</p>
       </div>
+    </div>
+    <div class="section-label">Games</div>
+    <div class="app-grid">
+      ${GAMES.map(tile).join('')}
     </div>`;
   } else {
     body += `
@@ -214,11 +237,11 @@ router.get('/', (req, res) => {
       <p>${C.legalName} builds practical web apps and games: ${APPS.map(a => escapeHtml(a.name)).join(', ')} and Shell Yeah!.</p>
       <div class="hero-actions">
         <a href="#apps" class="btn btn-primary">Explore our apps</a>
-        <a href="#games" class="btn btn-ghost">Play Shell Yeah!</a>
+        <a href="#games" class="btn btn-ghost">Play Games</a>
       </div>
     </div>`;
   }
-  body += publicSections(user);
+  if (!user) body += publicSections(user);
   res.send(shell('Apps and games', body, `${C.legalName} builds practical web apps and games, including Sealwright (e-signatures), Scanline (document scanning) and the beachcombing game Shell Yeah!.`));
 });
 
