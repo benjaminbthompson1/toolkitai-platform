@@ -136,14 +136,24 @@ function escapeHtml(s) {
 const SHELLYEAH_URL = 'https://shellyeah.tkitai.com';
 
 function publicSections(user) {
+  const shots = (a) => a.shots.map(sh => `<a href="/portal-assets/img/${sh.img}" target="_blank" rel="noopener" aria-label="${escapeHtml(sh.alt)} (opens full size)"><img src="/portal-assets/img/${sh.thumb}" alt="${escapeHtml(sh.alt)}" loading="lazy"></a>`).join('');
   const appCards = [
     { name: 'Sealwright', url: '/sealwright/', icon: APPS[0] && APPS[0].icon,
-      text: 'Send a PDF or Word document to one or more people for electronic signature. Signers get a secure link (no account needed), sign in order if you choose, and everyone receives a sealed copy with a timestamped audit trail.' },
+      text: 'Send a PDF or Word document to one or more people for electronic signature. Signers get a secure link (no account needed), sign in order if you choose, and everyone receives a sealed copy with a timestamped audit trail.',
+      shots: [
+        { img: 'sealwright-1.jpg', thumb: 'sealwright-1-thumb.jpg', alt: 'Sealwright dashboard listing documents out for signature, with their signing status' },
+        { img: 'sealwright-2.jpg', thumb: 'sealwright-2-thumb.jpg', alt: 'Sealwright signing page showing a document and a signature block with Draw, Type and Upload options' }
+      ] },
     { name: 'Scanline', url: '/scanline/', icon: APPS[1] && APPS[1].icon,
-      text: 'Turn your phone or webcam into a document scanner. Capture pages, crop and clean them up, extract the text, and save them as a PDF.' }
+      text: 'Turn your phone or webcam into a document scanner. Capture pages, crop and clean them up, extract the text, and save them as a PDF.',
+      shots: [
+        { img: 'scanline-1.jpg', thumb: 'scanline-1-thumb.jpg', alt: 'Scanline document list showing saved scans with page previews' },
+        { img: 'scanline-2.jpg', thumb: 'scanline-2-thumb.jpg', alt: 'Scanline edge-adjust screen with Color, Grayscale, B and W and Enhance filter options' }
+      ] }
   ].map(a => `<div class="info-card">
       <div class="info-card-head">${a.icon || ''}<h3>${escapeHtml(a.name)}</h3></div>
       <p>${escapeHtml(a.text)}</p>
+      <div class="shot-links">${shots(a)}</div>
       <a class="link" href="${a.url}">${user ? 'Open ' + escapeHtml(a.name) : 'Sign in to use ' + escapeHtml(a.name)} &rarr;</a>
     </div>`).join('');
 
@@ -160,16 +170,18 @@ function publicSections(user) {
 
     <section class="pub-section" id="games">
       <div class="section-label">Games</div>
-      <div class="game-card">
-        <img class="game-logo" src="/portal-assets/img/shellyeah-logo.png" alt="Shell Yeah! logo: Beachcombing around the world" width="450" height="175">
-        <div class="game-body">
-          <h3>Shell Yeah!</h3>
-          <p>Shell Yeah! is a beachcombing game that lets you explore real shelling beaches around the world, from Sanibel to Shark Bay, and collect the actual shells, shark teeth and treasures found on each one. Sift through shell beds, beat the clock in speed runs, learn about every species you find, and climb the global leaderboard on your way to shelling prizes.</p>
-          <div class="game-shots">
-            <img src="/portal-assets/img/shellyeah-1.jpg" alt="Shell Yeah! screenshot: a beach with seashells on the sand and in the shallow water" loading="lazy">
-            <img src="/portal-assets/img/shellyeah-2.jpg" alt="Shell Yeah! screenshot: a crowded patch of sand with a 0 of 15 shells found counter" loading="lazy">
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-head">
+            <img class="game-icon" src="/portal-assets/img/shellyeah-logo.png" alt="Shell Yeah! logo: Beachcombing around the world" width="450" height="175">
           </div>
-          <a class="btn btn-primary" href="${SHELLYEAH_URL}" target="_blank" rel="noopener">Play Shell Yeah!</a>
+          <h3 class="info-card-title">Shell Yeah!</h3>
+          <p>Shell Yeah! is a beachcombing game that lets you explore real shelling beaches around the world, from Sanibel to Shark Bay, and collect the actual shells, shark teeth and treasures found on each one. Sift through shell beds, beat the clock in speed runs, learn about every species you find, and climb the global leaderboard on your way to shelling prizes.</p>
+          <div class="shot-links">
+            <a href="/portal-assets/img/shellyeah-1.jpg" target="_blank" rel="noopener" aria-label="Open Shell Yeah! screenshot 1 full size"><img src="/portal-assets/img/shellyeah-1.jpg" alt="Shell Yeah! screenshot: a beach with seashells on the sand and in the shallow water" loading="lazy"></a>
+            <a href="/portal-assets/img/shellyeah-2.jpg" target="_blank" rel="noopener" aria-label="Open Shell Yeah! screenshot 2 full size"><img src="/portal-assets/img/shellyeah-2.jpg" alt="Shell Yeah! screenshot: a crowded patch of sand with a 0 of 15 shells found counter" loading="lazy"></a>
+          </div>
+          <a class="link" href="${SHELLYEAH_URL}" target="_blank" rel="noopener">Play Shell Yeah! &rarr;</a>
         </div>
       </div>
     </section>

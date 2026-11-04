@@ -158,7 +158,8 @@ html{scroll-behavior:smooth;}
 .pub-lead{color:var(--text-dim); font-size:16px; line-height:1.65; max-width:760px; margin:0;}
 .pub-lead strong{color:var(--text);}
 .muted-line{color:var(--text-faint); font-size:14px;}
-.info-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;}
+.info-grid{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:16px;}
+@media (max-width:720px){ .info-grid{grid-template-columns:1fr;} }
 .info-card{background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px;}
 .info-card-head{display:flex; align-items:center; gap:14px;}
 .info-card-head h3{margin:0; font-size:18px;}
@@ -189,3 +190,11 @@ html{scroll-behavior:smooth;}
 .legal ul{padding-left:20px;}
 .legal strong{color:var(--text);}
 .legal-meta{color:var(--text-faint) !important; font-size:13px !important; margin:0 0 20px;}
+
+/* Shell Yeah! card inside the same grid as the app cards */
+.game-icon{height:44px; width:auto; border-radius:10px; display:block;}
+.info-card-title{margin:0; font-size:18px;}
+.shot-links{display:flex; gap:10px;}
+.shot-links a{display:block; flex:1; min-width:0;}
+.shot-links img{width:100%; aspect-ratio:16/9; height:auto; object-fit:cover; border-radius:8px; border:1px solid var(--card-border); display:block; transition:border-color .15s ease;}
+.shot-links a:hover img{border-color:rgba(255,255,255,0.35);}
