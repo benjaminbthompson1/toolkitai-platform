@@ -17,6 +17,7 @@ function privacyHtml() {
     <li>To provide the apps: sign you in, store and display your documents and scans, route signing requests, and produce completed documents.</li>
     <li>To send transactional email: welcome and account messages, password resets, signing requests and completed copies.</li>
     <li>To text-extract or summarize a scan when you ask for that feature in Scanline. Content you submit for this is sent to our AI provider (Anthropic) only to return the result.</li>
+    <li>To email a scan, or send it for signature, when you ask Scanline to. Emailing sends the PDF to the single recipient you enter, from your name; "Send for signature" copies the scan into your Sealwright account and emails each signer you list.</li>
     <li>To keep the service secure, prevent abuse and fix problems.</li>
   </ul>
   <p>We do not sell your personal information, and we do not use your documents or scans for advertising.</p>
@@ -74,6 +75,7 @@ function termsHtml() {
 
   <h2>5. Scanline (document scanning)</h2>
   <p>Scanline's text extraction and summaries are generated automatically and may contain errors. Check important results against the original document.</p>
+  <p>When you email a scan or send it for signature, you are responsible for having the right to share it with the recipients you choose.</p>
 
   <h2>6. Games</h2>
   <p>Games such as Shell Yeah! are provided for entertainment. They may change, be updated or be discontinued at any time.</p>
