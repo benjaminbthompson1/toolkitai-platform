@@ -5,6 +5,6 @@ module.exports = {
   brand: 'Toolkit AI',
   state: 'Florida',
   email: 'info@tkitai.com',
-  effectiveDate: 'November 3, 2026',
+  effectiveDate: 'November 5, 2026',
   site: 'https://tkitai.com'
 };

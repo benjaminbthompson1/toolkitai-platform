@@ -8,7 +8,7 @@ function privacyHtml() {
 
   <h2>1. Information we collect</h2>
   <p><strong>Account information.</strong> When you create an account we collect your first and last name, email address, phone number and a password. Passwords are stored only as a salted, one-way hash; we cannot read them.</p>
-  <p><strong>Content you provide.</strong> In <em>Sealwright</em>: the documents you upload for signature, the document title, the names and email addresses of the people you ask to sign, the signatures and initials they provide, and a timestamped audit trail of the signing. In <em>Scanline</em>: the scans and images you capture or upload, the text extracted from them, document titles, and any password you choose to protect a scan (stored as a hash).</p>
+  <p><strong>Content you provide.</strong> In <em>Sealwright</em>: the documents you upload for signature, the document title, the names and email addresses of the people you ask to sign, the signatures and initials they provide, and a timestamped audit trail of the signing. In <em>Scanline</em>: the scans and images you capture or upload, the text extracted from them, document titles, and any password you choose to protect a scan (stored as a hash). In <em>Squishaloo</em>: game progress, such as levels completed, stars, stickers, in-game items and settings.</p>
   <p><strong>People invited to sign.</strong> A person who receives a signing link does not need an account. We store the name, email address, signature, and signing time for that person as part of the document record.</p>
   <p><strong>Technical information.</strong> Like most web services, our servers and hosting infrastructure may log your IP address, browser type and request times for security and troubleshooting. We use one essential session cookie (see section 4).</p>
 
@@ -43,10 +43,12 @@ function privacyHtml() {
   <p>You can view and update your name, email and phone number on your Profile page. You may ask us to access, correct or delete your information by emailing us. We do not sell or share personal information for advertising.</p>
 
   <h2>8. Children</h2>
-  <p>Our services are not directed to children under 13 and we do not knowingly collect their personal information. If you believe a child has given us information, email us and we will delete it.</p>
+  <p>Accounts are for adults and teens 13 and older, and we do not knowingly collect personal information from children under 13. Squishaloo is a game designed for children to play under the supervision of a parent or guardian, using the parent's or guardian's own ${C.brand} account. Children should not create their own accounts. While a child plays, Squishaloo stores only game progress linked to the parent's or guardian's account; it has no chat, no public leaderboard, no advertising and no way for a child to enter personal information. If you believe a child under 13 has created an account or given us personal information, email us and we will delete it.</p>
 
   <h2>9. Games</h2>
-  <p>Our games, including Shell Yeah! at shellyeah.tkitai.com, can be played without a ${C.brand} account. Shell Yeah! includes a global leaderboard: information you choose to submit to it, such as a display name and your scores, is stored and may be shown publicly to other players. If a game collects any other information, it will be described in that game's own notice. Prizes or promotions offered through a game may have their own official rules.</p>
+  <p><strong>Shell Yeah!</strong> at shellyeah.tkitai.com can be played without a ${C.brand} account. It includes a global leaderboard: information you choose to submit to it, such as a display name and your scores, is stored and may be shown publicly to other players.</p>
+  <p><strong>Squishaloo</strong> at tkitai.com/squishaloo requires a ${C.brand} account (see section 8). We store your game progress, such as levels, stars, stickers, in-game items and settings, linked to that account so play can continue on any device, plus a copy in your browser's local storage. Squishaloo uses the same essential sign-in cookie described in section 4 and no other cookies. It has no chat, no public leaderboard, and no third-party advertising or analytics. Its in-game store and bonus videos currently grant rewards without any payment or advertising; if we ever add real purchases or ads, we will update this policy first, and purchases will require a parent or guardian.</p>
+  <p>If a game collects any other information, it will be described in that game's own notice. Prizes or promotions offered through a game may have their own official rules.</p>
 
   <h2>10. Changes</h2>
   <p>We may update this policy. The effective date above shows the latest version, and material changes will be posted on this page.</p>
@@ -78,7 +80,8 @@ function termsHtml() {
   <p>When you email a scan or send it for signature, you are responsible for having the right to share it with the recipients you choose.</p>
 
   <h2>6. Games</h2>
-  <p>Games such as Shell Yeah! are provided for entertainment. They may change, be updated or be discontinued at any time.</p>
+  <p>Games such as Shell Yeah! and Squishaloo are provided for entertainment. They may change, be updated or be discontinued at any time, and in-game items, currencies and progress have no cash value and cannot be exchanged or transferred.</p>
+  <p>Squishaloo is designed for children to play using a parent's or guardian's account. The account holder is responsible for supervising that play and for any activity under the account.</p>
 
   <h2>7. Our property</h2>
   <p>The services, the ${C.brand} name and logos, and our software and designs are owned by ${C.legalName} or its licensors. These Terms do not give you rights to them other than to use the services as offered.</p>

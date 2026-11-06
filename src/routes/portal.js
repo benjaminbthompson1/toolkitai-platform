@@ -94,7 +94,7 @@ function shell(title, bodyInner, description) {
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title} — Toolkit AI</title>
-  <meta name="description" content="${escapeHtml(description || 'Toolkit AI LLC builds practical web apps and games: Sealwright, Scanline and Shell Yeah!.')}">
+  <meta name="description" content="${escapeHtml(description || 'Toolkit AI LLC builds practical web apps and games: Sealwright, Scanline, Shell Yeah! and Squishaloo.')}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/portal-assets/style.css">
@@ -134,6 +134,9 @@ function escapeHtml(s) {
 
 // ---------- landing page (public: everything here is readable without signing in) ----------
 const SHELLYEAH_URL = 'https://shellyeah.tkitai.com';
+// Squishaloo is its own service, path-routed on this host like Scanline, and
+// only playable while signed in (it sends visitors to /login?next=/squishaloo/).
+const SQUISHALOO_URL = '/squishaloo/';
 
 // Games shown as tiles on the signed-in home page (same grid as the apps).
 const GAMES = [
@@ -150,6 +153,22 @@ const GAMES = [
         <path d="M50 74 L50 28"/><path d="M42 74 L32 34"/><path d="M58 74 L68 34"/><path d="M34 74 L21 46"/><path d="M66 74 L79 46"/>
       </g>
       <rect x="38" y="74" width="24" height="9" rx="4.5" fill="#DB5373"/>
+    </svg>`
+  },
+  {
+    id: 'squishaloo', name: 'Squishaloo', url: SQUISHALOO_URL, external: false,
+    description: 'Squish the squishies. Collect them all!',
+    icon: `<svg class="app-tile-icon" width="44" height="44" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="squishBgPortal" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8ff0d4"/><stop offset="100%" stop-color="#3fb2ff"/></linearGradient>
+        <radialGradient id="squishBlobPortal" cx="0.35" cy="0.3" r="0.8"><stop offset="0%" stop-color="#ffc4dc"/><stop offset="50%" stop-color="#ff5c9d"/><stop offset="100%" stop-color="#cf2d72"/></radialGradient>
+      </defs>
+      <rect x="4" y="4" width="92" height="92" rx="22" fill="url(#squishBgPortal)"/>
+      <path d="M50 22 C72 22 82 38 82 56 C82 72 68 80 50 80 C32 80 18 72 18 56 C18 38 28 22 50 22 Z" fill="url(#squishBlobPortal)"/>
+      <ellipse cx="38" cy="36" rx="8" ry="4.5" fill="#fff" opacity=".75" transform="rotate(-30 38 36)"/>
+      <circle cx="40" cy="52" r="6" fill="#fff"/><circle cx="60" cy="52" r="6" fill="#fff"/>
+      <circle cx="41" cy="53" r="3.4" fill="#2a1b52"/><circle cx="61" cy="53" r="3.4" fill="#2a1b52"/>
+      <path d="M44 63 Q50 69 56 63" stroke="#2a1b52" stroke-width="3" fill="none" stroke-linecap="round"/>
     </svg>`
   }
 ];
@@ -202,6 +221,18 @@ function publicSections(user) {
           </div>
           <a class="link" href="${SHELLYEAH_URL}" target="_blank" rel="noopener">Play Shell Yeah! &rarr;</a>
         </div>
+        <div class="info-card">
+          <div class="info-card-head">
+            <img class="game-icon" src="/portal-assets/img/squishaloo-logo.png" alt="Squishaloo logo: Squish the squishies. Collect them all!" width="450" height="175">
+          </div>
+          <h3 class="info-card-title">Squishaloo</h3>
+          <p>Squishaloo is a squishy game for kids. Tap jelly squishies to squish them across 40 levels in four worlds, from Gummy Meadow to Starlight Jelly. Squish hearts, strawberries, fish, gummy bears, butter, toast, stars and more, hunt for rare capybara, bunny and paw squishies, chain combos, dodge spiky Grumps and beat the Mega Chonk boss. It's played with a parent's or guardian's ${C.brand} account, and progress is saved to that account.</p>
+          <div class="shot-links">
+            <a href="/portal-assets/img/squishaloo-1.jpg" target="_blank" rel="noopener" aria-label="Open Squishaloo screenshot 1 full size"><img src="/portal-assets/img/squishaloo-1.jpg" alt="Squishaloo screenshot: the home screen with colorful squishies floating around" loading="lazy"></a>
+            <a href="/portal-assets/img/squishaloo-2.jpg" target="_blank" rel="noopener" aria-label="Open Squishaloo screenshot 2 full size"><img src="/portal-assets/img/squishaloo-2.jpg" alt="Squishaloo screenshot: a level in Gummy Meadow with a timer, hearts and power-ups" loading="lazy"></a>
+          </div>
+          <a class="link" href="${SQUISHALOO_URL}">${user ? 'Play Squishaloo' : 'Sign in to play Squishaloo'} &rarr;</a>
+        </div>
       </div>
     </section>
 
@@ -234,7 +265,7 @@ router.get('/', (req, res) => {
     body += `
     <div class="hero">
       <h1>Small, focused <span class="accent-text">apps and games</span>,<br>built with care.</h1>
-      <p>${C.legalName} builds practical web apps and games: ${APPS.map(a => escapeHtml(a.name)).join(', ')} and Shell Yeah!.</p>
+      <p>${C.legalName} builds practical web apps and games: ${APPS.map(a => escapeHtml(a.name)).join(', ')}, ${GAMES.map(g => escapeHtml(g.name)).join(' and ')}.</p>
       <div class="hero-actions">
         <a href="#apps" class="btn btn-primary">Explore our apps</a>
         <a href="#games" class="btn btn-ghost">Play Games</a>
@@ -242,7 +273,7 @@ router.get('/', (req, res) => {
     </div>`;
   }
   if (!user) body += publicSections(user);
-  res.send(shell('Apps and games', body, `${C.legalName} builds practical web apps and games, including Sealwright (e-signatures), Scanline (document scanning) and the beachcombing game Shell Yeah!.`));
+  res.send(shell('Apps and games', body, `${C.legalName} builds practical web apps and games, including Sealwright (e-signatures), Scanline (document scanning), the beachcombing game Shell Yeah! and the kids' game Squishaloo.`));
 });
 
 // ---------- public legal pages ----------
@@ -256,15 +287,19 @@ router.get('/terms', (req, res) => {
 });
 
 // ---------- signup ----------
+// Carries a validated ?next=… through links and forms (login ↔ signup) so a
+// visitor sent here by an app or game lands back there afterwards.
+const nextQs = (next, sep = '?') => safeNext(next) ? `${sep}next=${encodeURIComponent(next)}` : '';
+
 router.get('/signup', (req, res) => {
-  if (req.session && req.session.userId) return res.redirect('/');
+  if (req.session && req.session.userId) return res.redirect(safeNext(req.query.next) || '/');
   const q = req.query;
   res.send(shell('Sign up', `${topbar(null)}
     <div class="auth-shell"><div class="auth-card">
       <h2>Create your account</h2>
       <p class="sub">Get access to every app on Toolkit AI.</p>
       ${q.err ? `<div class="banner banner-error">${escapeHtml(q.err)}</div>` : ''}
-      <form method="POST" action="/signup">
+      <form method="POST" action="/signup${nextQs(q.next)}">
         <div class="field"><label>First name</label><input type="text" name="firstName" required autofocus value="${escapeHtml(q.firstName)}"></div>
         <div class="field"><label>Last name</label><input type="text" name="lastName" required value="${escapeHtml(q.lastName)}"></div>
         <div class="field"><label>Email</label><input type="email" name="email" required value="${escapeHtml(q.email)}"></div>
@@ -274,7 +309,7 @@ router.get('/signup', (req, res) => {
         </div>
         <button class="btn btn-primary btn-block" type="submit">Create account</button>
       </form>
-      <div class="auth-foot">Already have an account? <a class="link" href="/login">Sign in</a></div>
+      <div class="auth-foot">Already have an account? <a class="link" href="/login${nextQs(q.next)}">Sign in</a></div>
     </div></div>`));
 });
 
@@ -286,7 +321,7 @@ router.post('/signup', express.urlencoded({ extended: false }), async (req, res)
   const phone = (req.body.phone || '').trim();
   const fail = (msg) => {
     const qs = new URLSearchParams({ err: msg, email, firstName, lastName, phone }).toString();
-    res.redirect(`/signup?${qs}`);
+    res.redirect(`/signup?${qs}${nextQs(req.query.next, '&')}`);
   };
   if (!firstName) return fail('First name is required.');
   if (!lastName) return fail('Last name is required.');
@@ -303,6 +338,7 @@ router.post('/signup', express.urlencoded({ extended: false }), async (req, res)
   const fresh = await findUserByEmail(email);
   req.session.userId = user.id;
   req.session.userEmail = user.email;
+  req.session.firstName = firstName;
   req.session.isAdmin = fresh.is_admin;
 
   const base = process.env.APP_BASE_URL || `${req.protocol}://${req.get('host')}`;
@@ -338,7 +374,7 @@ router.get('/login', (req, res) => {
       </form>
       <div class="auth-foot">
         <a class="link" href="/forgot-password">Forgot your password?</a><br><br>
-        Don't have an account? <a class="link" href="/signup">Sign up</a>
+        Don't have an account? <a class="link" href="/signup${nextQs(req.query.next)}">Sign up</a>
       </div>
     </div></div>`));
 });
@@ -351,6 +387,7 @@ router.post('/login', express.urlencoded({ extended: false }), async (req, res) 
   }
   req.session.userId = user.id;
   req.session.userEmail = user.email;
+  req.session.firstName = user.first_name;
   req.session.isAdmin = user.is_admin;
   res.redirect(safeNext(req.query.next) || '/');
 });
@@ -398,6 +435,7 @@ router.post('/profile', requireAuth, express.urlencoded({ extended: false }), as
   const before = await findUserById(req.session.userId);
   await updateUserProfile(req.session.userId, { firstName, lastName, email, phone });
   req.session.userEmail = email;
+  req.session.firstName = firstName;
 
   const changes = [];
   if (before.email !== email) changes.push(`Email changed to ${email}`);
